@@ -12,11 +12,20 @@ export interface Brand {
     translations: any[];
 }
 
+
+export interface BrandProduct {
+    id: number;
+    name: string;
+    price: number;
+
+}
+
 type BrandsResponse = Brand[];
+
 const BrandsAPI = createApi({
     reducerPath: "brands",
     baseQuery: commonBaseQuery,
-    tagTypes: ['brands', "singleBrand"],
+    tagTypes: ['brands', "singleBrand", "brandProducts"], 
     endpoints: (builder) => ({
 
         GetAllBrands: builder.query<BrandsResponse, void>({
@@ -26,12 +35,21 @@ const BrandsAPI = createApi({
             }),
             providesTags: ['brands']
         }),
+        GetBrandProducts: builder.query<any, { id: number | string; limit: number; offset: number }>({
+            query: ({ id, limit, offset }) => ({
+                url: `/brands/products/${id}`,
+                method: 'GET',
+                params: { limit, offset },
+            }),
+            providesTags: (result, error, arg) => [{ type: 'brandProducts', id: arg.id }]
+        }),
 
     })
 })
 
 export const {
     useGetAllBrandsQuery,
+    useGetBrandProductsQuery,
 } = BrandsAPI;
 
 export default BrandsAPI;

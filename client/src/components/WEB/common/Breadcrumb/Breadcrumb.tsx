@@ -4,7 +4,7 @@ import { FaHome, FaChevronRight } from 'react-icons/fa';
 
 interface BreadcrumbItem {
     label: string;
-    href: string;
+    href?: string;
 }
 
 interface Props {
@@ -41,25 +41,36 @@ const Breadcrumb: React.FC<Props> = ({
                     </div>
                 </div>
                 <nav className="flex items-center">
+          
                     <ul className="flex flex-wrap items-center gap-3 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white/90 border border-white/10">
-                        {link_items.map((item, idx) => (
-                            <li key={idx} className="flex items-center gap-3">
-                                <Link
-                                    to={item.href}
-                                    className={`flex items-center gap-1.5 transition-all duration-300
-                                    ${idx === link_items.length - 1
-                                            ? 'text-pink-400 font-bold'
-                                            : 'hover:text-white text-white/70'}`}
-                                >
-                                    {idx === 0 && <FaHome className="text-sm" />}
-                                    <span className="uppercase tracking-wider">{item.label}</span>
-                                </Link>
+                        {link_items.map((item, idx) => {
+                            const isLast = idx === link_items.length - 1;
 
-                                {idx !== link_items.length - 1 && (
-                                    <FaChevronRight className="text-[10px] text-white/30" />
-                                )}
-                            </li>
-                        ))}
+                            return (
+                                <li key={idx} className="flex items-center gap-3">
+                             
+                                    {!isLast && item.href ? (
+                                        <Link
+                                            to={item.href}
+                                            className="flex items-center gap-1.5 transition-all duration-300 hover:text-white text-white/70"
+                                        >
+                                            {idx === 0 && <FaHome className="text-sm" />}
+                                            <span className="uppercase tracking-wider">{item.label}</span>
+                                        </Link>
+                                    ) : (
+                             
+                                        <div className="flex items-center gap-1.5 text-pink-400 font-bold cursor-default">
+                                            {idx === 0 && <FaHome className="text-sm" />}
+                                            <span className="uppercase tracking-wider">{item.label}</span>
+                                        </div>
+                                    )}
+
+                                    {!isLast && (
+                                        <FaChevronRight className="text-[10px] text-white/30" />
+                                    )}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </nav>
             </div>

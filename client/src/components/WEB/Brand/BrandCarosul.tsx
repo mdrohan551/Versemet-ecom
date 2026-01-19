@@ -6,8 +6,6 @@ interface Brand {
     id: number;
     name: string;
     image: string;
-    status: number;
-    brand_products_count: number;
 }
 
 interface BrandCarouselProps {
@@ -16,53 +14,54 @@ interface BrandCarouselProps {
 }
 
 const BrandCarousel: React.FC<BrandCarouselProps> = ({ brands, isLoading }) => {
-    if (isLoading) return <div className="py-10 text-center">Loading Brands...</div>;
-    if (!brands || brands.length === 0) return null;
-    const duplicatedBrands = [...brands, ...brands];
-    const createSlug = (name: string) => {
-        return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-    };
+    const IMG_PATH = "https://versemart.deepverselab.com/storage/brand";
 
+    if (isLoading) return <div className="py-10 text-center font-medium">Loading Brands...</div>;
+    if (!brands || brands.length === 0) return null;
+
+    const duplicatedBrands = [...brands, ...brands, ...brands]; 
+      console.log(brands)
     return (
-        <section className="py-10 bg-white overflow-hidden">
+        <section className="py-12 bg-[#FDFCFD] overflow-hidden">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-8">
-                    <h2 className="text-2xl md:text-3xl font-bold text-primary inline-block relative pb-2">
-                        Top Brands
-                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-pink-600 rounded-full"></span>
-                    </h2>
+                {/* Section Header */}
+                <div className="text-center mb-10">
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#00153D] mb-1">Top Brands</h2>
+                    <div className="w-16 h-1 bg-[#D81B60] mx-auto rounded-full"></div>
                 </div>
 
-                <div className="relative flex overflow-hidden">
+                {/* Infinite Slider */}
+                <div className="relative flex items-center">
                     <motion.div
-                        className="flex space-x-8 md:space-x-16 items-center"
-                        animate={{
-                            x: [0, -100 * brands.length],
-                        }}
+                        className="flex gap-4 md:gap-6"
+                        animate={{ x: [0, -200 * brands.length] }}
                         transition={{
                             x: {
                                 repeat: Infinity,
-                                repeatType: "loop",
-                                duration: 30,
+                                duration: 40,
                                 ease: "linear",
                             },
                         }}
-                        whileHover={{ animationPlayState: "paused" }}
-                        style={{ display: "flex", width: "max-content" }}
+                        style={{ width: "max-content" }}
                     >
                         {duplicatedBrands.map((brand, index) => (
                             <Link
-                                to={`/brand/${createSlug(brand.name)}`}
+                                to={`/brand/${brand.name.toLowerCase().replace(/\s+/g, '-')}`}
                                 state={{ brandId: brand.id }}
-                                key={`${brand.id}-${index}`}
-                                className="shrink-0 w-32 h-20 md:w-40 md:h-24 flex items-center justify-center border border-gray-100 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                                key={index}
+                                className="w-36 h-24 md:w-52 md:h-32 flex items-center justify-center bg-white border border-gray-100 rounded-lg p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-md transition-all shrink-0"
                             >
                                 <img
-                                    src={`/images/brands/${brand.image}`}
+                                    src={`${IMG_PATH}/${brand.image}`}
                                     alt={brand.name}
-                                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                                    className="max-w-full max-h-full object-contain"
                                     onError={(e) => {
-                                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/150?text=Brand';
+                                        const target = e.target as HTMLImageElement;
+                                        if (!target.src.includes('storage/app/public')) {
+                                            target.src = `https://versemart.deepverselab.com/storage/app/public/brand/${brand.image}`;
+                                        } else {
+                                            target.src = 'https://via.placeholder.com/200x100?text=Brand';
+                                        }
                                     }}
                                 />
                             </Link>
