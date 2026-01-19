@@ -1,0 +1,164 @@
+/* src/index.css */
+@import "tailwindcss";
+
+
+
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== FONT FACE SETUP ===== */
+@font-face {
+  font-family: "jakarta-bold";
+  src: url(assets/font/PlusJakartaSans-Bold.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-bold-italic";
+  src: url(assets/font/PlusJakartaSans-BoldItalic.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-Extrabold";
+  src: url(assets/font/PlusJakartaSans-ExtraBold.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-ExtraLight";
+  src: url(assets/font/PlusJakartaSans-ExtraLight.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-medium";
+  src: url(assets/font/PlusJakartaSans-Medium.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-medium-italic";
+  src: url(assets/font/PlusJakartaSans-MediumItalic.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-Regular";
+  src: url(assets/font/PlusJakartaSans-Regular.ttf);
+}
+
+@font-face {
+  font-family: "jakarta-Semibold";
+  src: url(assets/font/PlusJakartaSans-SemiBold.ttf);
+}
+
+
+
+/* ===== GLOBAL RESET ===== */
+/* ===== GLOBAL RESET ===== */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* For Chrome, Safari, and Edge */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full border-2 border-gray-100;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/80;
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.primary') theme('colors.gray.100');
+  }
+
+  body {
+    font-family: "jakarta-Regular", sans-serif !important;
+    @apply bg-white text-gray-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-Dark_primary text-white;
+  }
+}
+
+@layer components {
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+
+  /* custom class use */
+  @keyframes pulse-spotlight {
+    0%, 100% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+
+    50% {
+      opacity: 0.4;
+      filter: brightness(1.5) blur(10px);
+      /* একটু উজ্জ্বল হয়ে ব্লার হবে */
+    }
+  }
+
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn .4s ease;
+  }
+
+}
+
+/* ===== THEME VARIABLES (TAILWIND v4) ===== */
+@theme inline {
+
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+
+  /* Colors */
+  --color-primary: #D10074;
+  --color-secondary: #b40565;
+  --color-Light_primary: #d1007370;
+  --color-Dark_primary: #1a000e;
+  --color-Dark_primary2: #1a010f;
+
+  /* Jakarta Font Variables */
+  --font-jakarta-bold: "jakarta-bold", sans-serif;
+  --font-jakarta-bold-italic: "jakarta-bold-italic", sans-serif;
+  --font-jakarta-Extrabold: "jakarta-Extrabold", sans-serif;
+  --font-jakarta-ExtraLight: "jakarta-ExtraLight", sans-serif;
+  --font-jakarta-medium: "jakarta-medium", sans-serif;
+  --font-jakarta-medium-italic: "jakarta-medium-italic", sans-serif;
+  --font-jakarta-Regular: "jakarta-Regular", sans-serif;
+  --font-jakarta-Semibold: "jakarta-Semibold", sans-serif;
+
+}
