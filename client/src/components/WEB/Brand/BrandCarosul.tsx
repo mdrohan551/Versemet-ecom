@@ -14,13 +14,14 @@ interface BrandCarouselProps {
 }
 
 const BrandCarousel: React.FC<BrandCarouselProps> = ({ brands, isLoading }) => {
-    const IMG_PATH = "https://versemart.deepverselab.com/storage/brand";
+    const url = import.meta.env.VITE_IMG_URL
+    const IMG_PATH = `${url}/storage/brand`;
 
     if (isLoading) return <div className="py-10 text-center font-medium">Loading Brands...</div>;
     if (!brands || brands.length === 0) return null;
 
-    const duplicatedBrands = [...brands, ...brands, ...brands]; 
-      console.log(brands)
+    const duplicatedBrands = [...brands, ...brands, ...brands];
+    console.log(brands)
     return (
         <section className="py-12 bg-[#FDFCFD] overflow-hidden">
             <div className="container mx-auto px-4">
@@ -57,10 +58,19 @@ const BrandCarousel: React.FC<BrandCarouselProps> = ({ brands, isLoading }) => {
                                     className="max-w-full max-h-full object-contain"
                                     onError={(e) => {
                                         const target = e.target as HTMLImageElement;
+                                        const baseUrl = url;
                                         if (!target.src.includes('storage/app/public')) {
-                                            target.src = `https://versemart.deepverselab.com/storage/app/public/brand/${brand.image}`;
-                                        } else {
-                                            target.src = 'https://via.placeholder.com/200x100?text=Brand';
+                                            target.src = `${baseUrl}/storage/app/public/brand/${brand.image}`;
+                                        }
+                                        else if (target.src.includes('storage/app/public')) {
+                                            target.src = `${baseUrl}/public/images/brands/${brand.image}`;
+                                        }
+                                        else if (target.src.includes('public/images/brands')) {
+                                            target.src = `${baseUrl}/images/${brand.image}`;
+                                        }
+                                        else {
+                                            target.src = 'https://via.placeholder.com/200x100?text=No+Image';
+                                            target.onerror = null; // ইনফিনিট লুপ বন্ধ করতে
                                         }
                                     }}
                                 />
